@@ -1,0 +1,12 @@
+CREATE DATABASE IF NOT EXISTS doc_tracker CHARACTER SET utf8mb4;
+USE doc_tracker;
+CREATE TABLE IF NOT EXISTS users(id INT AUTO_INCREMENT PRIMARY KEY, username VARCHAR(50) UNIQUE NOT NULL, password VARCHAR(255) NOT NULL, role ENUM('admin','staff') NOT NULL DEFAULT 'staff');
+CREATE TABLE IF NOT EXISTS documents(id INT AUTO_INCREMENT PRIMARY KEY, release_number VARCHAR(20) UNIQUE NOT NULL, document_title VARCHAR(255) NOT NULL, document_type VARCHAR(80) NOT NULL, from_office VARCHAR(120) NOT NULL, released_to VARCHAR(120) NOT NULL, released_by VARCHAR(120) NOT NULL, date_released DATETIME NOT NULL, status ENUM('Received','Forwarded','Released','Completed') NOT NULL DEFAULT 'Received', remarks TEXT, attachment VARCHAR(255) NULL, INDEX(status), INDEX(date_released));
+CREATE TABLE IF NOT EXISTS receiving_records(id INT AUTO_INCREMENT PRIMARY KEY, document_id INT NOT NULL, received_by VARCHAR(120) NOT NULL, position VARCHAR(120) NOT NULL, date_received DATE NOT NULL, time_received TIME NOT NULL, signature MEDIUMTEXT NOT NULL, remarks TEXT, FOREIGN KEY(document_id) REFERENCES documents(id) ON DELETE CASCADE);
+CREATE TABLE IF NOT EXISTS document_history(id INT AUTO_INCREMENT PRIMARY KEY, document_id INT NOT NULL, action VARCHAR(120) NOT NULL, performed_by VARCHAR(120) NOT NULL, date_time DATETIME NOT NULL, remarks TEXT, FOREIGN KEY(document_id) REFERENCES documents(id) ON DELETE CASCADE);
+CREATE TABLE IF NOT EXISTS departments(id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(120) UNIQUE NOT NULL);
+INSERT IGNORE INTO departments(name) VALUES ('ACCOUNTING'),('ADMIN'),('MAO'),('ASSESSOR'),('BPLO'),('MBO'),('MCR'),('MEO'),('HRMO'),('MDRRMO'),('MENRO'),('MHO'),('MPDC'),('MSWDO'),('MPPW'),('PESO'),('SB'),('TOURISM'),('MTO');
+
+INSERT INTO users(username,password,role) VALUES
+('admin','$2y$10$jX/M57MYlkxryGcax6DGouFZ0/cU1Z6Ndri2OrlWo7bBLyyt3rIz6','admin'),
+('staff','$2y$10$QrU4.BB3amX4It5uF/QsguMwIwaUbg6Rea5KiOQDX1qU8jqfK4.1u','staff');

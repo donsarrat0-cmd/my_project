@@ -1,0 +1,3 @@
+USE doc_tracker;
+CREATE TABLE IF NOT EXISTS departments(id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(120) UNIQUE NOT NULL);
+INSERT IGNORE INTO departments(name) VALUES ('ACCOUNTING'),('ADMIN'),('MAO'),('ASSESSOR'),('BPLO'),('MBO'),('MCR'),('MEO'),('HRMO'),('MDRRMO'),('MENRO'),('MHO'),('MPDC'),('MSWDO'),('MPPW'),('PESO'),('SB'),('TOURISM'),('MTO');
